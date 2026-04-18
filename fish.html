@@ -8,410 +8,619 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#0b1220;color:#e6e9ef;font-family:system-ui,"PingFang SC","Microsoft YaHei"}
 .main{max-width:500px;margin:0 auto;padding:10px}
-.card{background:#121a29;border-radius:16px;padding:16px;margin:0 0 10px 0;box-shadow:0 4px 12px rgba(0,0,0,0.25)}
+
+.notice-bar{
+background:linear-gradient(90deg,#ff6699,#cc66ff,#66ccff);
+color:#fff;padding:6px 12px;border-radius:10px;margin-bottom:10px;
+white-space:nowrap;overflow:hidden;font-size:12px
+}
+.notice-scroll{display:inline-block;animation:scroll 12s linear infinite}
+@keyframes scroll{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+
+.card{background:#121a29;border-radius:16px;padding:16px;margin:0 0 10px;box-shadow:0 4px 12px rgba(0,0,0,0.25)}
 .title{text-align:center;font-size:20px;font-weight:700;color:#9ceeff;margin-bottom:10px}
-.subtitle{text-align:center;font-size:14px;color:#99aab5;margin-bottom:10px}
 .bar{width:100%;height:10px;background:#1e2a38;border-radius:5px;overflow:hidden;margin:6px 0}
 .bar .fill{height:100%;background:#00ccff;border-radius:5px;transition:0.4s}
-.bar .fill.season{background:#ff6699}
-.bar .fill.fishing{background:#00ff99;width:0%;animation:fishAnim 1.5s linear forwards}
-@keyframes fishAnim{to{width:100%}}
 
-/* 分类栏 */
 .category-bar{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
-.category-btn{padding:8px 12px;border-radius:12px;background:#1e2a38;color:#fff;border:none;cursor:pointer;font-size:13px}
+.category-btn{padding:8px 12px;border-radius:12px;background:#1e2a38;color:#fff;border:none;cursor:pointer}
 .category-btn.active{background:#0099cc}
 
-/* 图鉴格子 + 炫酷边框 */
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
 .grid .item{
-  background:#1e2a38;
-  border-radius:10px;
-  padding:8px;
-  text-align:center;
-  font-size:11px;
-  cursor:pointer;
-  transition:all 0.3s;
-  position:relative;
-  border:2px solid #333;
+background:#1e2a38;border-radius:10px;padding:8px;text-align:center;font-size:11px;
+position:relative;border:2px solid #333;transition:all 0.3s
 }
-/* 未拥有 */
-.grid .item:not(.caught){
-  opacity:0.5;
-  border:2px solid #2a3544;
-}
-/* 已拥有 —— 超级炫酷发光边框 */
+.grid .item:not(.caught){opacity:0.5;border-color:#2a3544}
 .grid .item.caught{
-  border:2px solid #00ccff;
-  background:#182433;
-  animation:ownedGlow 1.2s infinite alternate ease-in-out;
+border:2px solid #00ccff;background:#182433;
+animation:ownedGlow 1.2s infinite alternate ease-in-out
 }
 @keyframes ownedGlow{
-  0%{box-shadow:0 0 3px #00ccff,0 0 7px rgba(0,204,255,0.4)}
-  100%{box-shadow:0 0 8px #00ccff,0 0 18px rgba(0,204,255,0.7)}
+0%{box-shadow:0 0 3px #00ccff,0 0 7px rgba(0,204,255,0.4)}
+100%{box-shadow:0 0 8px #00ccff,0 0 18px rgba(0,204,255,0.7)}
 }
-/* 限定鱼边框 */
-.grid .item.season{
-  border-color:#ff6699 !important;
-  animation:seasonGlow 1.2s infinite alternate ease-in-out;
-}
-@keyframes seasonGlow{
-  0%{box-shadow:0 0 3px #ff6699,0 0 7px rgba(255,102,153,0.4)}
-  100%{box-shadow:0 0 8px #ff6699,0 0 18px rgba(255,102,153,0.7)}
-}
-.grid .item:hover{transform:scale(1.07)}
-/* 钓获次数角标 */
-.grid .item .count{
-  position:absolute;top:2px;right:3px;
-  font-size:9px;color:#fff;
-  background:#00ccff;border-radius:3px;padding:1px 3px;
-  min-width:14px;text-align:center;
-}
-.grid .item.season .count{background:#ff6699}
 
-.btn{width:100%;padding:14px 12px;border:none;border-radius:12px;background:#1e2a38;color:#fff;font-size:15px;font-weight:600;margin:0 0 8px 0;text-align:left;cursor:pointer}
-.btn-primary{background:#0099cc}
-.btn-success{background:#22aa66}
-.btn-warning{background:#cc8800}
-.btn-season{background:#ff6699}
-.btn-book{background:#9966ff}
-.log{font-size:13px;line-height:1.5;margin-top:10px;max-height:220px;overflow-y:auto}
-.search{width:100%;padding:10px 12px;border:none;border-radius:12px;background:#1e2a38;color:#fff;margin-bottom:10px}
-.task-item{padding:8px 0;border-bottom:1px solid #1e2a38;font-size:13px}
+.btn{width:100%;padding:14px 12px;border:none;border-radius:12px;color:#fff;font-weight:600;margin-bottom:8px;cursor:pointer}
+.btn:disabled{opacity:0.5}
+.btn-primary{background:linear-gradient(135deg,#0099cc,#00ccff)}
+.btn-success{background:linear-gradient(135deg,#22aa66,#33dd88)}
+.btn-shop{background:linear-gradient(135deg,#ff6600,#ffaa33)}
+.btn-bag{background:linear-gradient(135deg,#66ccff,#99ddff)}
+.btn-expand{background:linear-gradient(135deg,#ff9933,#ffcc66)}
+.btn-craft{background:linear-gradient(135deg,#aa55cc,#cc88ff)}
+.btn-upgrade{background:linear-gradient(135deg,#ff5555,#ff8888)}
+
+.search{width:100%;padding:10px;border:none;border-radius:12px;background:#1e2a38;color:#fff;margin-bottom:10px}
+.shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.shop-item{
+background:#1e2a38;border-radius:10px;padding:8px;text-align:center;font-size:11px;
+border:2px solid #333;transition:0.3s;cursor:pointer
+}
+.shop-item:hover{transform:scale(1.05);border-color:#00ccff}
+
+.bag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.bag-item{
+background:#1e2a38;border-radius:10px;padding:8px;text-align:center;font-size:11px;
+border:2px solid #333;transition:0.3s;position:relative;cursor:pointer
+}
+.bag-item:hover{transform:scale(1.05);border-color:#00ccff}
+.bag-item .count{
+position:absolute;top:2px;right:3px;font-size:9px;
+background:#00ccff;color:#fff;border-radius:3px;padding:1px 3px
+}
+
+.modal{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:999
+}
+.modal-box{background:#121a29;width:90%;max-width:360px;border-radius:20px;padding:20px;text-align:center}
+.modal-btn{width:100%;padding:12px;border:none;border-radius:12px;color:#fff;font-weight:bold;cursor:pointer;margin-top:10px}
+.bg-blue{background:linear-gradient(135deg,#0099cc,#00ccff)}
+.bg-green{background:linear-gradient(135deg,#22aa66,#33dd88)}
+.bg-orange{background:linear-gradient(135deg,#ff6600,#ffaa33)}
+.bg-purple{background:linear-gradient(135deg,#aa55cc,#cc88ff)}
+.bg-red{background:linear-gradient(135deg,#ff5555,#ff8888)}
+
+.log{max-height:220px;overflow-y:auto;font-size:13px;line-height:1.5;margin-top:10px}
+.task-item{padding:8px 0;border-bottom:1px solid #1e2a38}
 .task-item .done{color:#22aa66}
-.white{color:#fff}.blue{color:#66f}.green{color:#0f9}.cyan{color:#0ff}.purple{color:#f3f}.orange{color:#fa3}.season-text{color:#ff6699}
-.fish-anim{animation:bounce 0.5s infinite alternate}@keyframes bounce{to{transform:translateY(-6px)}}
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:999}
-.modal-content{background:#121a29;border-radius:16px;padding:20px;width:90%;max-width:400px}
-.modal-title{font-size:18px;font-weight:700;color:#9ceeff;margin-bottom:10px}
-.modal-info{font-size:14px;line-height:1.8;margin-bottom:10px}
-.modal-btn{width:100%;padding:12px;border:none;border-radius:12px;background:#0099cc;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+
+.qty-input{
+width:100%;padding:10px;border:none;border-radius:12px;background:#1e2a38;color:#fff;
+margin:10px 0;text-align:center
+}
+
+.fish-animation{
+animation: shake 0.2s infinite alternate;
+}
+@keyframes shake{
+0%{transform:translateX(-3px)}
+100%{transform:translateX(3px)}
+}
 </style>
 </head>
 <body>
 <div class="main" id="app"></div>
 
 <script>
-let gold = 3000, level = 1, exp = 0, maxExp = 100;
-let rod = {name:"木竿", bonus:0, needLevel:1};
-let caught = new Set(), fishCount = {}, caughtSeason = new Set();
-let doneTasks = new Set(), doneHandbook = new Set();
-let currentCategory = "all";
-let showOnlyOwned = false; // 只看已获得
+// ====================== 基础数据 ======================
+let gold = 88888, level = 1, exp = 0, maxExp = 100
+let rod = { name: "木竿", level: 1, bonus: 0, upgrade: 0 }
+let caught = new Set(), fishCount = {}
+let doneTasks = new Set(), doneHandbook = new Set()
+let currentRace = "全部"
+let onlyOwned = false
+let lastFishTime = 0, fishCD = 1600
+let lastTaxTime = Date.now()
 
-const keywords = ["蝈蝈","曲波","三金","猪纯悦","张德华"];
-const races = ["水族","虫族","灵族","海族","神族"];
-const mid = ["小小","萌萌","呆呆","憨憨","闪闪","亮亮","酷酷","飘飘","飞飞","游游"];
-const suffix = ["鱼","鳅","虾","鲷","鲈","鲮","鲶","鲤","鳝","鲀"];
-const rar = [
-  {n:"破碎",c:"white",r:0.55,p:0.5},
-  {n:"普通",c:"blue",r:0.30,p:1.0},
-  {n:"稀有",c:"green",r:0.10,p:2.0},
-  {n:"精良",c:"cyan",r:0.03,p:4.0},
-  {n:"史诗",c:"purple",r:0.015,p:10.0},
-  {n:"传说",c:"orange",r:0.005,p:30.0}
+// ====================== 背包扩容 ======================
+let backpack = { capacity: 50, maxCapacity: 1000, expandLevel: 0 }
+const expandPrices = [
+2000,4000,7000,11000,16000,22000,29000,37000,46000,56000,
+66000,76000,86000,96000,106000,122000,138000,154000,170000,186000,
+216000,246000,276000,306000,336000,396000,456000,516000,576000,636000,
+696000,756000,816000,876000,936000,996000,1056000,1116000,1176000,1236000,
+1296000,1356000,1416000,1476000,1536000,1596000,1656000,1716000,1776000,1836000
+];
+
+function expandBag() {
+if (backpack.capacity >= backpack.maxCapacity) { log("✅ 背包已满级1000格"); return; }
+const cost = expandPrices[backpack.expandLevel];
+if (!cost) { log("✅ 已满级"); return; }
+if (gold >= cost) {
+gold -= cost;
+backpack.expandLevel++;
+backpack.capacity += 10;
+log(`✅ 扩容成功！背包：${backpack.capacity}格`);
+refreshAll();
+} else { log(`❌ 需：${cost} 金币`); }
+}
+
+// ====================== 道具系统 ======================
+const items = [];
+const prefix = ["蝈蝈","曲波","三金","纯悦","德华"];
+const types = ["鱼饵","药剂","碎片","晶石","卷轴","神器","宝箱","强化","幸运","特殊"];
+
+function getDynamicPrice(base){
+const rate=Math.min(1+gold/15000000,2.5);
+return Math.floor(base*rate);
+}
+
+function initItems(){
+let id=1;
+for(let p=0;p<5;p++){
+for(let t=0;t<10;t++){
+for(let i=0;i<8;i++){
+const pre=prefix[p];
+const type=types[t];
+const name=`${pre}·${type}${i+1}`;
+let basePrice=0,desc="";
+let use=()=>{};
+switch(type){
+case "鱼饵":basePrice=120*(i+1);desc="提升上钩率";use=()=>log("✅ 鱼饵生效");break;
+case "药剂":basePrice=180*(i+1);desc="获得经验";use=()=>{addExp(60*(i+1));log("✅ 使用成功");refreshAll()};break;
+case "碎片":basePrice=500*(i+1);desc="合成材料";use=()=>log("❌ 请在合成台使用");break;
+case "晶石":basePrice=350*(i+1);desc="获得金币";use=()=>{gold+=800*(i+1);log("✅ 获得金币");refreshAll()};break;
+case "卷轴":basePrice=250*(i+1);desc="解锁图鉴";use=()=>{const f=allFish[Math.floor(Math.random()*allFish.length)];caught.add(f.id);log(`✅ 解锁：${f.name}`);refreshAll()};break;
+case "神器":basePrice=1200*(i+1);desc="永久强化";use=()=>{rod.bonus+=i+2;log(`✅ 鱼竿强度+${i+2}`);refreshAll()};break;
+case "宝箱":basePrice=600*(i+1);desc="随机奖励";use=()=>{Math.random()<0.4?addItem(1+Math.floor(Math.random()*200)):gold+=1500*(i+1);log("✅ 开启成功");refreshAll()};break;
+case "强化":basePrice=450*(i+1);desc="强化必成";use=()=>log("✅ 下次强化100%成功");break;
+case "幸运":basePrice=300*(i+1);desc="提升幸运";use=()=>log("✅ 幸运值提升");break;
+case "特殊":basePrice=2500*(i+1);desc="提升等级";use=()=>{level++;maxExp*=1.1;log("✅ 等级+1");refreshAll()};break;
+}
+items.push({id,name,type,basePrice,price:getDynamicPrice(basePrice),desc,use,stack:999});
+id++;
+if(id>400)return;
+}}
+}
+
+// ====================== 合成台 ======================
+const recipes=[
+{name:"精致鱼竿",needs:[{id:3,num:20},{id:11,num:20},{id:19,num:20}],fee:40000,reward:{name:"精致鱼竿",level:5,bonus:30,upgrade:0}},
+{name:"传说鱼竿",needs:[{id:3,num:50},{id:11,num:50},{id:19,num:50},{id:27,num:50},{id:35,num:50}],fee:180000,reward:{name:"传说鱼竿",level:10,bonus:150,upgrade:0}}
+];
+
+// ====================== 鱼竿强化 ======================
+function upgradeRod(){
+const cost=Math.floor(8000*Math.pow(1.45,rod.upgrade));
+if(gold>=cost){
+gold-=cost;
+rod.upgrade++;
+rod.bonus+=4;
+log(`✅ 鱼竿强化+${rod.upgrade}，强度+4`);
+refreshAll();
+}else{log(`❌ 需${cost}金币`);}
+}
+
+// ====================== 背包逻辑 ======================
+let bagItems=[];
+
+function addItem(itemId,num=1){
+const it=items.find(x=>x.id===itemId);
+if(!it)return;
+if(bagItems.length>=backpack.capacity){log("❌ 背包已满！");return;}
+const has=bagItems.find(x=>x.id===itemId);
+if(has){has.num=Math.min(has.num+num,it.stack);}
+else{bagItems.push({id:itemId,num});}
+refreshAll();
+}
+
+function useItem(itemId){
+const it=items.find(x=>x.id===itemId);
+const idx=bagItems.findIndex(x=>x.id===itemId);
+if(idx===-1)return;
+bagItems[idx].num--;
+if(bagItems[idx].num<=0)bagItems.splice(idx,1);
+it.use();
+closeModal();
+refreshAll();
+}
+
+function sellItem(itemId){
+const it=items.find(x=>x.id===itemId);
+const idx=bagItems.findIndex(x=>x.id===itemId);
+if(idx===-1)return;
+const num=bagItems[idx].num;
+gold+=Math.floor(it.basePrice*0.3)*num;
+bagItems.splice(idx,1);
+log(`✅ 出售获得 ${Math.floor(it.basePrice*0.3)*num} 金币`);
+closeModal();
+refreshAll();
+}
+
+function craft(recipeIndex){
+const r=recipes[recipeIndex];
+let ok=true;
+r.needs.forEach(n=>{const item=bagItems.find(x=>x.id===n.id);if(!item||item.num<n.num)ok=false;});
+if(!ok){log("❌ 材料不足");return;}
+if(gold<r.fee){log(`❌ 手续费不足：${r.fee}`);return;}
+gold-=r.fee;
+r.needs.forEach(n=>{const idx=bagItems.findIndex(x=>x.id===n.id);bagItems[idx].num-=n.num;if(bagItems[idx].num<=0)bagItems.splice(idx,1);});
+rod=r.reward;
+log(`✅ 合成成功：${rod.name}`);
+refreshAll();
+}
+
+// ====================== 【核心：还原你截图里的鱼名和种族】======================
+const raceList = ["水族", "虫族", "灵族", "海族", "神族"];
+const fishNames = [
+  "蝈蝈亮亮鱼", "三金小小鲷", "张德华游游鳅", "张德华飞飞鲷",
+  "曲波小小鳝", "曲波呆呆鳝", "三金闪闪鱼", "张德华飘飘鲶",
+  "张德华飞飞鳝", "曲波小小鳝", "猪纯悦飘飘虾", "三金呆呆鳅",
+  "猪纯悦小小鲮", "猪纯悦飞飞虾", "三金闪闪鱼", "曲波闪闪鲶",
+  "曲波游游鱼", "张德华亮亮鳝", "三金萌萌鲈", "张德华飘飘鳅",
+  "三金酷酷虾", "三金呆呆鲷", "三金酷酷鱼", "蝈蝈飞飞鲮",
+  "蝈蝈亮亮鲤", "蝈蝈呆呆鲶", "蝈蝈游游虾", "三金呆呆鱼",
+  "张德华萌萌鳅", "蝈蝈游游鳝", "猪纯悦酷酷虾", "蝈蝈游游鲈",
+  "曲波飘飘虾", "曲波飘飘鲶", "猪纯悦游游鱼", "张德华呆呆鲶",
+  "蝈蝈闪闪鳅", "三金小小鲶", "曲波飞飞鲀", "蝈蝈飞飞鲤",
+  "三金亮亮鲀", "曲波闪闪鲮", "猪纯悦闪闪鲷", "三金游游鲮"
 ];
 
 const allFish = [];
-function initFish(){
-  for(let i=1;i<=3200;i++){
-    const kw = keywords[Math.floor(Math.random()*keywords.length)];
-    const m = mid[Math.floor(Math.random()*mid.length)];
-    const s = suffix[Math.floor(Math.random()*suffix.length)];
-    const rt = rar[Math.floor(Math.random()*rar.length)];
-    const race = races[Math.floor(Math.random()*races.length)];
-    const weight = (Math.random()*5 + 0.1).toFixed(2);
-    const intro = [
-      `来自曲波宇宙的${race}鱼种，藏着${kw}的力量`,
-      `${kw}专属守护${race}，传说能带来好运`,
-      `深海秘境中的${kw}${race}精灵，极其罕见`,
-      `${kw}一族的${race}象征，拥有古老血脉`,
-      `被${kw}祝福的${race}，钓获者可获财富`
-    ][Math.floor(Math.random()*5)];
-    allFish.push({
-      id:i, name:`${kw}${m}${s}`, rarity:rt.n, color:rt.c,
-      price:Math.floor((5+i*0.2)*rt.p), weight:weight,
-      intro:intro, race:race, needLv:Math.ceil(i/320)
-    });
-    fishCount[i] = 0;
+function initFish() {
+  let id = 1;
+  for (let r = 0; r < 5; r++) {
+    const race = raceList[r];
+    for (let i = 0; i < 640; i++) {
+      const name = fishNames[i % fishNames.length];
+      const needRod = Math.ceil((id) / 320);
+      const basePrice = 55 + id * 2.2;
+      allFish.push({
+        id: id,
+        name: name,
+        race: race,
+        basePrice: basePrice,
+        needRod: needRod
+      });
+      fishCount[id] = 0;
+      id++;
+    }
   }
 }
 
-const seasonFish = [
-  {id:3201,name:"蝈蝈春日樱花鲤",rarity:"限定",color:"season-text",price:6666,weight:"8.88kg",intro:"春日限定，蝈蝈守护的樱花神鱼",race:"神族"},
-  {id:3202,name:"曲波惊蛰春雷鱼",rarity:"限定",color:"season-text",price:5555,weight:"7.77kg",intro:"惊蛰觉醒，曲波之力加持",race:"灵族"},
-  {id:3203,name:"三金谷雨青波鳅",rarity:"限定",color:"season-text",price:4444,weight:"6.66kg",intro:"谷雨时节，三金汇聚",race:"海族"},
-  {id:3204,name:"猪纯悦清风拂面虾",rarity:"限定",color:"season-text",price:3333,weight:"5.55kg",intro:"清风徐来，猪纯悦相伴",race:"虫族"},
-  {id:3205,name:"张德华樱吹雪鲷",rarity:"限定",color:"season-text",price:2999,weight:"4.44kg",intro:"德华专属，樱雪纷飞",race:"水族"},
-  {id:3206,name:"蝈蝈溪涧雾影鱼",rarity:"限定",color:"season-text",price:2666,weight:"3.33kg",intro:"溪涧迷雾，蝈蝈引路",race:"灵族"},
-  {id:3207,name:"曲波春风渡月鲮",rarity:"限定",color:"season-text",price:2333,weight:"2.22kg",intro:"春风渡月，曲波随行",race:"海族"},
-  {id:3208,name:"三金浅草游萤鳅",rarity:"限定",color:"season-text",price:1999,weight:"1.11kg",intro:"浅草萤光，三金闪耀",race:"虫族"},
-  {id:3209,name:"张德华春日神鱼",rarity:"限定",color:"season-text",price:9999,weight:"9.99kg",intro:"德华巅峰，春日神鱼",race:"神族"}
-];
-seasonFish.forEach(f=>fishCount[f.id]=0);
-
-const rods = [
-  {name:"木竿",bonus:0,needLevel:1,price:0},{name:"竹节竿",bonus:3,needLevel:3,price:300},{name:"溪流竿",bonus:6,needLevel:6,price:800},{name:"碳素竿",bonus:9,needLevel:9,price:1500},
-  {name:"矶钓竿",bonus:12,needLevel:12,price:2500},{name:"路亚竿",bonus:15,needLevel:15,price:4000},{name:"台钓竿",bonus:18,needLevel:18,price:6000},{name:"筏钓竿",bonus:21,needLevel:21,price:8500},
-  {name:"远投竿",bonus:24,needLevel:24,price:12000},{name:"黑坑竿",bonus:27,needLevel:27,price:16000},{name:"竞技竿",bonus:30,needLevel:30,price:20000},{name:"马口竿",bonus:33,needLevel:35,price:25000},
-  {name:"雷强竿",bonus:36,needLevel:40,price:32000},{name:"飞蝇竿",bonus:39,needLevel:45,price:40000},{name:"冰钓竿",bonus:42,needLevel:50,price:50000},{name:"深海竿",bonus:45,needLevel:55,price:65000},
-  {name:"星河竿",bonus:48,needLevel:65,price:85000},{name:"曲波竿",bonus:52,needLevel:75,price:120000},{name:"春日限定竿",bonus:58,needLevel:85,price:180000},{name:"宇宙神竿",bonus:65,needLevel:100,price:300000}
-];
-
-const tasks = [];
-const tTypes = ["catch","earn","sell","collect","levelup"];
-for(let i=1;i<=2900;i++){
-  const t = tTypes[Math.floor(Math.random()*tTypes.length)];
-  const tar = Math.floor(Math.random()*30)+1;
-  let txt = "";
-  switch(t){
-    case "catch":txt=`钓上${tar}条鱼`;break;
-    case "earn":txt=`赚取${tar*80}金币`;break;
-    case "sell":txt=`卖出${tar}条鱼`;break;
-    case "collect":txt=`收集${tar}种新鱼`;break;
-    case "levelup":txt=`提升${tar}个等级`;break;
-  }
-  tasks.push({id:i,text:txt,type:t,tar:tar,pro:0,done:false,exp:tar*8,gold:tar*40});
+// ====================== 税收 ======================
+function dailyTax(){
+const now=Date.now();
+if(now-lastTaxTime<4200000)return;
+lastTaxTime=now;
+const tax=Math.floor(gold*0.008);
+if(tax>0){gold-=tax;log(`💰 税收扣除：${tax}`);refreshAll();}
 }
 
-const handbook = [];
-for(let i=1;i<=100;i++) handbook.push({id:i,text:`完成${i*10}次钓鱼`,tar:i*10,pro:0,done:false,gold:i*60});
-
-// 核心：筛选 = 搜索 + 种族分类 + 只看已获得
-function filterFish(){
-  const val = (document.querySelector(".search")?.value || "").toLowerCase();
-  const items = document.querySelectorAll(".grid .item");
-  items.forEach(it=>{
-    const name = it.dataset.n.toLowerCase();
-    const race = it.dataset.race;
-    const isCaught = it.classList.contains("caught");
-    const matchName = name.includes(val);
-    const matchCat = currentCategory === "all" || race === currentCategory;
-    const matchOwned = !showOnlyOwned || isCaught;
-    it.style.display = (matchName && matchCat && matchOwned) ? "block" : "none";
-  });
+// ====================== 弹窗 ======================
+function closeModal(){const m=document.querySelector(".modal");if(m)m.remove();}
+function openShopModal(itemId){
+const it=items.find(x=>x.id===itemId);
+it.price=getDynamicPrice(it.basePrice);
+document.body.insertAdjacentHTML("beforeend",`
+<div class="modal" onclick="closeModal()">
+<div class="modal-box" onclick="event.stopPropagation()">
+<h3>${it.name}</h3>
+<p>单价：${it.price} 金币</p>
+<p>${it.desc}</p>
+<input type="number" class="qty-input" id="buyQty" value="1" min="1" max="999">
+<button class="modal-btn bg-blue" onclick="buy(${it.id})">购买</button>
+<button class="modal-btn bg-green" onclick="closeModal()">取消</button>
+</div>
+</div>`);
+}
+function openBagModal(itemId){
+const it=items.find(x=>x.id===itemId);
+const bi=bagItems.find(x=>x.id===itemId);
+document.body.insertAdjacentHTML("beforeend",`
+<div class="modal" onclick="closeModal()">
+<div class="modal-box" onclick="event.stopPropagation()">
+<h3>${it.name}</h3>
+<p>数量：${bi.num}</p>
+<p>${it.desc}</p>
+<button class="modal-btn bg-green" onclick="useItem(${it.id})">使用</button>
+<button class="modal-btn bg-orange" onclick="sellItem(${it.id})">出售</button>
+<button class="modal-btn bg-blue" onclick="closeModal()">取消</button>
+</div>
+</div>`);
 }
 
-function toggleOwned(){
-  showOnlyOwned = !showOnlyOwned;
-  document.querySelector("#ownedBtn").innerText = showOnlyOwned ? "✅ 只看已获得" : "🔍 只看已获得";
-  filterFish();
+// ====================== 实时刷新 ======================
+function refreshAll(){
+dailyTax();
+items.forEach(it=>it.price=getDynamicPrice(it.basePrice));
+const active=document.querySelector(".active-page")?.id||"ui";
+if(active==="ui")ui();
+else if(active==="book")showBook();
+else if(active==="bag")showBag();
+else if(active==="shop")showShop();
+else if(active==="craft")showCraft();
+else if(active==="handbook")showHandbook();
+else if(active==="tasks")showTasks();
+else if(active==="upgrade")showUpgrade();
 }
 
-document.addEventListener("click",(e)=>{
-  const action = e.target.closest("[data-action]")?.dataset.action;
-  const fishId = e.target.closest("[data-fish]")?.dataset.fish;
-  const cat = e.target.closest("[data-cat]")?.dataset.cat;
-  if(fishId) showFishDetail(fishId);
-  if(cat){
-    currentCategory = cat;
-    document.querySelectorAll(".category-btn").forEach(b=>b.classList.remove("active"));
-    document.querySelector(`[data-cat="${cat}"]`).classList.add("active");
-    filterFish();
-  }
-  if(!action) return;
-  switch(action){
-    case "fish": fish(); break;
-    case "book": renderBook(); break;
-    case "seasonBook": renderSeasonBook(); break;
-    case "handbook": renderHandbook(); break;
-    case "tasks": renderTasks(); break;
-    case "shop": renderShop(); break;
-    case "save": saveGame(); break;
-    case "rank": renderRank(); break;
-    case "back": renderHome(); break;
-    case "getHand": getHand(); break;
-    case "getTask": getTask(); break;
-    case "closeModal": closeModal(); break;
-  }
-});
-
-function showFishDetail(fishId){
-  const isSeason = fishId > 3200;
-  const fish = isSeason ? seasonFish.find(f=>f.id==fishId) : allFish.find(f=>f.id==fishId);
-  if(!fish) return;
-  const count = fishCount[fishId] || 0;
-  const modal = `
-<div class="modal">
-<div class="modal-content">
-<div class="modal-title ${fish.color}">${fish.name}</div>
-<div class="modal-info">
-<b>种族：</b>${fish.race}<br>
-<b>稀有度：</b>${fish.rarity}<br>
-<b>价格：</b>${fish.price} 金币<br>
-<b>重量：</b>${fish.weight} kg<br>
-<b>已钓：</b>${count} 次<br>
-<b>介绍：</b>${fish.intro}
+// ====================== 主界面 ======================
+function ui(){
+document.getElementById("app").innerHTML=`
+<div class="notice-bar"><div class="notice-scroll">🎣 终极钓鱼大亨 · 曲波宇宙 S1｜图鉴已还原</div></div>
+<div class="card active-page" id="ui">
+<div class="title">🎣 钓鱼大亨</div>
+<p>金币：${gold}｜等级：${level}｜鱼竿：${rod.name} Lv${rod.level}+${rod.upgrade}</p>
+<div class="bar"><div class="fill" style="width:${exp/maxExp*100}%"></div></div>
+<button class="btn btn-primary fish-btn" onclick="goFish()">🎣 开始钓鱼</button>
+<button class="btn btn-success" onclick="showBook()">📖 图鉴</button>
+<button class="btn btn-bag" onclick="showBag()">🎒 背包</button>
+<button class="btn btn-shop" onclick="showShop()">🛒 商店</button>
+<button class="btn btn-craft" onclick="showCraft()">⚗️ 合成台</button>
+<button class="btn btn-upgrade" onclick="showUpgrade()">🔧 强化鱼竿</button>
+<button class="btn btn-success" onclick="showHandbook()">📜 手册</button>
+<button class="btn btn-primary" onclick="showTasks()">📋 任务</button>
+<button class="btn btn-primary" onclick="save()">💾 保存</button>
 </div>
-<button class="modal-btn" data-action="closeModal">关闭</button>
-</div>
-</div>`;
-  document.body.insertAdjacentHTML("beforeend",modal);
-}
-function closeModal(){
-  const m = document.querySelector(".modal");
-  if(m) m.remove();
-}
-
-function renderHome(){
-  document.getElementById("app").innerHTML = `
-<div class="card">
-<div class="title">🎣 终极钓鱼大亨 · 曲波宇宙</div>
-<div class="subtitle season-text">S1 赛季</div>
-<div style="font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:6px">
-<span>金币：<b id="gold">${gold}</b></span>
-<span>等级：<b id="level">${level}</b>/100</span>
-<span>EXP：<b id="exp">${exp}</b>/<b id="max">${maxExp}</b></span>
-</div>
-<div class="bar"><div class="fill" id="expBar" style="width:${(exp/maxExp)*100}%"></div></div>
-</div>
-<div class="card">
-<button class="btn btn-primary" data-action="fish">🎣 开始钓鱼</button>
-<button class="btn btn-success" data-action="book">📖 钓鱼图鉴</button>
-<button class="btn btn-season" data-action="seasonBook">🌸 限定图鉴</button>
-<button class="btn btn-book" data-action="handbook">📚 钓鱼手册</button>
-<button class="btn btn-warning" data-action="tasks">📋 任务大厅</button>
-<button class="btn btn-success" data-action="shop">🛒 渔具商店</button>
-<button class="btn btn-primary" data-action="save">💾 保存游戏</button>
-<button class="btn btn-season" data-action="rank">🏆 排行榜</button>
-</div>
-<div class="card"><div class="title">渔获日志</div><div class="log" id="log"></div></div>
+<div class="card"><div class="title">日志</div><div id="log" class="log"></div></div>
 `;
 }
 
-// 图鉴：新增 只看已获得 按钮
-function renderBook(){
-  currentCategory = "all";
-  showOnlyOwned = false;
-  let h = `<div class="card"><div class="title">钓鱼图鉴 ${caught.size}/3200</div>`;
-  h += `<div class="category-bar">
-<button class="category-btn active" data-cat="all">全部</button>
-${races.map(r=>`<button class="category-btn" data-cat="${r}">${r}</button>`).join('')}
-<button class="category-btn" id="ownedBtn" onclick="toggleOwned()">🔍 只看已获得</button>
-</div>`;
-  h += `<input class="search" placeholder="搜索关键词" oninput="filterFish()">`;
-  h += `<div class="grid">`;
-  allFish.forEach(f=>{
-    const ok = caught.has(f.id);
-    const cnt = fishCount[f.id] || 0;
-    h += `<div class="item ${ok?'caught':''}" data-fish="${f.id}" data-n="${f.name}" data-race="${f.race}">
-<span class="count">${cnt}</span>${ok?'✅':'❌'}<br>${f.name}</div>`;
+function log(msg){
+const l=document.getElementById("log");
+l.innerHTML+=`<div>${msg}</div>`;
+l.scrollTop=l.scrollHeight;
+}
+
+// ====================== 趣味钓鱼系统 ======================
+function goFish(){
+const now=Date.now();
+if(now-lastFishTime<fishCD){log("⏳ 冷却中");return;}
+lastFishTime=now;
+
+const btn=document.querySelector(".fish-btn");
+btn.classList.add("fish-animation");
+
+log("🎣 抛竿入水…");
+setTimeout(()=>log("🐟 鱼漂在动…"),500);
+setTimeout(()=>log("⚡ 有鱼咬钩！"),900);
+
+setTimeout(()=>{
+btn.classList.remove("fish-animation");
+
+const pool=allFish.filter(f=>f.needRod<=rod.level);
+if(pool.length===0){
+log("❌ 鱼竿等级太低，大鱼挣脱了！");
+refreshAll();
+return;
+}
+
+const f=pool[Math.floor(Math.random()*pool.length)];
+caught.add(f.id);
+fishCount[f.id]++;
+
+const event=Math.random();
+let extra=0;
+let msg="";
+
+if(event<0.03){
+extra=Math.floor(f.basePrice*1.5);
+msg="✨ 幸运暴击！收益提升50%";
+}else if(event<0.12){
+extra=Math.floor(f.basePrice*0.5);
+msg="🌧️ 雨天加成！收益提升50%";
+}else if(event<0.22){
+extra=0;
+msg="🎁 钓到宝箱！";
+addItem(33,1);
+}else{
+extra=0;
+msg="";
+}
+
+const gain=Math.floor(f.basePrice*0.9+rod.bonus+extra);
+gold+=gain;
+addExp(10+rod.bonus);
+
+if(Math.random()<0.18){
+addItem(3+Math.floor(Math.random()*8),1);
+log(`✅ 钓到 ${f.name} +${gain} 金币｜获得碎片！${msg}`);
+}else{
+log(`✅ 钓到 ${f.name} +${gain} 金币！${msg}`);
+}
+
+refreshAll();
+},1600);
+}
+
+function addExp(n){
+exp+=n;
+while(exp>=maxExp&&level<100){
+exp-=maxExp;level++;maxExp=Math.floor(maxExp*1.25);gold+=level*120;
+}}
+
+// ====================== 还原截图的图鉴界面 ======================
+function showBook() {
+  let h = `<div class="card active-page" id="book">
+    <div class="title">钓鱼图鉴 ${caught.size}/3200</div>
+    <div class="category-bar">
+      <button class="${currentRace==='全部'?'active':''}" onclick="currentRace='全部';showBook()">全部</button>
+      <button class="${currentRace==='水族'?'active':''}" onclick="currentRace='水族';showBook()">水族</button>
+      <button class="${currentRace==='虫族'?'active':''}" onclick="currentRace='虫族';showBook()">虫族</button>
+      <button class="${currentRace==='灵族'?'active':''}" onclick="currentRace='灵族';showBook()">灵族</button>
+      <button class="${currentRace==='海族'?'active':''}" onclick="currentRace='海族';showBook()">海族</button>
+      <button class="${currentRace==='神族'?'active':''}" onclick="currentRace='神族';showBook()">神族</button>
+    </div>
+    <div class="category-bar">
+      <button class="${onlyOwned?'':'active'}" onclick="onlyOwned=false;showBook()">全部显示</button>
+      <button class="${onlyOwned?'active':''}" onclick="onlyOwned=true;showBook()">只看已获得</button>
+    </div>
+    <input class="search" placeholder="搜索关键词" oninput="filterFish(this.value)">
+    <div class="grid" id="fishGrid">`;
+
+  let filteredFish = allFish;
+  if (currentRace !== "全部") {
+    filteredFish = filteredFish.filter(f => f.race === currentRace);
+  }
+  if (onlyOwned) {
+    filteredFish = filteredFish.filter(f => caught.has(f.id));
+  }
+
+  filteredFish.forEach(f => {
+    const own = caught.has(f.id);
+    const count = fishCount[f.id] || 0;
+    h += `<div class="item ${own?'caught':''}">
+      ${f.name}<br>
+      <span style="font-size:10px;color:#888;">${own ? '✔' : '✖'} ${count}</span>
+    </div>`;
   });
-  h += `</div><button class="btn btn-primary" data-action="back">返回</button></div>`;
+
+  h += `</div><button class="btn btn-primary" onclick="ui()">返回</button></div>`;
   document.getElementById("app").innerHTML = h;
 }
 
-function renderSeasonBook(){
-  let h=`<div class="card"><div class="title season-text">限定图鉴 ${caughtSeason.size}/9</div>`;
-  h+=`<input class="search" placeholder="搜索限定鱼" oninput="
-const v=this.value.toLowerCase();
-document.querySelectorAll('.grid .item').forEach(it=>{
-it.style.display=it.dataset.n.toLowerCase().includes(v)?'block':'none'})">`;
-  h+=`<div class="grid">`;
-  seasonFish.forEach(f=>{
-    const ok=caughtSeason.has(f.id);
-    const cnt=fishCount[f.id]||0;
-    h+=`<div class="item ${ok?'caught season':''}" data-fish="${f.id}" data-n="${f.name}">
-<span class="count">${cnt}</span>${ok?'✅':'❌'}<br>${f.name}</div>`;
+function filterFish(key) {
+  const grid = document.getElementById("fishGrid");
+  if (!grid) return;
+  const filteredFish = allFish.filter(f => 
+    f.name.includes(key) && 
+    (currentRace === "全部" || f.race === currentRace) &&
+    (!onlyOwned || caught.has(f.id))
+  );
+  let html = "";
+  filteredFish.forEach(f => {
+    const own = caught.has(f.id);
+    const count = fishCount[f.id] || 0;
+    html += `<div class="item ${own?'caught':''}">
+      ${f.name}<br>
+      <span style="font-size:10px;color:#888;">${own ? '✔' : '✖'} ${count}</span>
+    </div>`;
   });
-  h+=`</div><button class="btn btn-primary" data-action="back">返回</button></div>`;
-  document.getElementById("app").innerHTML=h;
+  grid.innerHTML = html;
 }
 
-function renderHandbook(){
-  let h=`<div class="card"><div class="title">钓鱼手册 Lv${level}</div>
-<div class="bar"><div class="fill" style="width:${exp/maxExp*100}%"></div></div>`;
-  handbook.slice(0,10).forEach(t=>{const ok=t.done?"done":"doing";h+=`<div class="task-item ${ok}">${t.text} ${t.pro}/${t.tar}</div>`});
-  h+=`<button class="btn btn-success" data-action="getHand">领取奖励</button>
-<button class="btn btn-primary" data-action="back">返回</button></div>`;
-  document.getElementById("app").innerHTML=h;
-}
-function renderTasks(){
-  let h=`<div class="card"><div class="title">任务大厅</div>`;
-  tasks.slice(0,10).forEach(t=>{const ok=t.done?"done":"doing";h+=`<div class="task-item ${ok}">${t.text} ${t.pro}/${t.tar}</div>`});
-  h+=`<button class="btn btn-success" data-action="getTask">领取奖励</button>
-<button class="btn btn-primary" data-action="back">返回</button></div>`;
-  document.getElementById("app").innerHTML=h;
-}
-function renderShop(){
-  let h=`<div class="card"><div class="title">渔具商店</div>`;
-  rods.forEach(r=>{
-    const own=rod.name==r.name,can=level>=r.needLevel&&gold>=r.price&&!own;
-    h+=`<div class="task-item">${r.name} Lv.${r.needLevel} ${r.price}金币</div>`;
-    if(can) h+=`<button class="btn btn-success" onclick="buy('${r.name}',${r.bonus},${r.needLevel},${r.price})">购买</button>`;
-  });
-  h+=`<button class="btn btn-primary" data-action="back">返回</button></div>`;
-  document.getElementById("app").innerHTML=h;
-}
-function renderRank(){
-  const total=caught.size+caughtSeason.size;
-  document.getElementById("app").innerHTML=`<div class="card"><div class="title">🏆 钓鱼总数</div>
-<div class="task-item">你已收集：${total} 种</div>
-<button class="btn btn-primary" data-action="back">返回</button></div>`;
-}
-
-function fish(){
-  const logEl=document.getElementById("log");
-  logEl.innerHTML+=`<div class="fish-anim">🎣 抛竿中...</div>`;
-  logEl.innerHTML+=`<div class="bar"><div class="fill fishing"></div></div>`;
-  setTimeout(()=>{
-    let f;const pool=allFish.filter(x=>x.needLv<=level);const rand=Math.random();
-    if(rand<0.0015&&level>=10){
-      f=seasonFish[Math.floor(Math.random()*seasonFish.length)];
-      caughtSeason.add(f.id);
-    }else{
-      f=pool[Math.floor(Math.random()*pool.length)];
-      caught.add(f.id);
-    }
-    fishCount[f.id]=(fishCount[f.id]||0)+1;
-    gold+=f.price;addExp(8+rod.bonus);updateTask("catch",1);updateHand(1);
-    logEl.innerHTML+=`<div><span class="${f.color}">钓到【${f.rarity}】${f.name} +${f.price}金币</span></div>`;
-    logEl.scrollTop=logEl.scrollHeight;upd();
-  },1500);
-}
-
-function addExp(amt){
-  exp+=amt;
-  while(exp>=maxExp&&level<100){exp-=maxExp;level++;maxExp=Math.floor(maxExp*1.25);if(level%10==0)gold+=level*800;}
-  if(level>=100)exp=maxExp;upd();
-}
-function upd(){
-  document.getElementById("gold").innerText=gold;
-  document.getElementById("level").innerText=level;
-  document.getElementById("exp").innerText=exp;
-  document.getElementById("max").innerText=maxExp;
-  document.getElementById("expBar").style.width=(exp/maxExp*100)+"%";
-}
-function updateHand(n){handbook.forEach(t=>{if(!t.done){t.pro+=n;if(t.pro>=t.tar)t.done=true;}});}
-function getHand(){handbook.forEach(t=>{if(t.done&&!doneHandbook.has(t.id)){doneHandbook.add(t.id);gold+=t.gold;}});upd();saveGame();renderHandbook();}
-function updateTask(ty,n){tasks.forEach(t=>{if(!t.done&&t.type==ty){t.pro+=n;if(t.pro>=t.tar)t.done=true;}});}
-function getTask(){tasks.forEach(t=>{if(t.done&&!doneTasks.has(t.id)){doneTasks.add(t.id);exp+=t.exp;gold+=t.gold;}});addExp(0);saveGame();renderTasks();}
-function buy(n,b,l,p){if(gold>=p){gold-=p;rod={name:n,bonus:b,needLevel:l};upd();saveGame();renderShop();}}
-
-function saveGame(){
-  localStorage.setItem("fishSave_v6",JSON.stringify({
-    gold,level,exp,maxExp,rod,
-    caught:Array.from(caught),fishCount,
-    caughtSeason:Array.from(caughtSeason),
-    doneTasks:Array.from(doneTasks),doneHandbook:Array.from(doneHandbook),tasks,handbook
-  }));
-  const logEl=document.getElementById("log");if(logEl)logEl.innerHTML+=`<div>💾 已保存</div>`;
-}
-function loadGame(){
-  const d=localStorage.getItem("fishSave_v6");if(!d)return;const j=JSON.parse(d);
-  gold=j.gold;level=j.level;exp=j.exp;maxExp=j.maxExp;rod=j.rod;
-  caught=new Set(j.caught);fishCount=j.fishCount||{};
-  caughtSeason=new Set(j.caughtSeason);
-  doneTasks=new Set(j.doneTasks);doneHandbook=new Set(j.doneHandbook);
-  if(j.tasks)j.tasks.forEach((t,i)=>tasks[i]=t);if(j.handbook)j.handbook.forEach((t,i)=>handbook[i]=t);
-  upd();
-}
-
-window.addEventListener("DOMContentLoaded",()=>{
-  initFish();
-  loadGame();
-  renderHome();
+// ====================== 背包界面 ======================
+function showBag(){
+const cost=backpack.capacity<backpack.maxCapacity?expandPrices[backpack.expandLevel]:"已满级";
+let h=`<div class="card active-page" id="bag"><div class="title">背包 ${bagItems.length}/${backpack.capacity}</div>`;
+h+=`<p>扩容+10格：${cost} 金币｜满级1000</p>`;
+h+=`<button class="btn btn-expand" onclick="expandBag()">🔧 扩容背包</button>`;
+h+=`<div class="bag-grid">`;
+bagItems.forEach(i=>{
+const it=items.find(x=>x.id===i.id);
+if(!it)return;
+h+=`<div class="bag-item" onclick="openBagModal(${it.id})">
+<span class="count">${i.num}</span>${it.name}
+</div>`;
 });
+h+=`</div><button class="btn btn-primary" onclick="ui()">返回</button></div>`;
+document.getElementById("app").innerHTML=h;
+}
+
+// ====================== 商店界面 ======================
+function showShop(key=""){
+let h=`<div class="card active-page" id="shop"><div class="title">商店</div>`;
+h+=`<input class="search" placeholder="搜索" oninput="showShop(this.value)">`;
+h+=`<div class="shop-grid">`;
+items.forEach(it=>{
+if(key&&!it.name.includes(key))return;
+h+=`<div class="shop-item" onclick="openShopModal(${it.id})">${it.name}<br>${it.price}金币</div>`;
+});
+h+=`</div><button class="btn btn-primary" onclick="ui()">返回</button></div>`;
+document.getElementById("app").innerHTML=h;
+}
+
+function buy(id){
+const it=items.find(x=>x.id===id);
+const qty=parseInt(document.getElementById("buyQty").value)||1;
+const total=it.price*qty;
+if(gold>=total){
+gold-=total;
+addItem(id,qty);
+log(`✅ 购买：${it.name} ×${qty}`);
+closeModal();
+refreshAll();
+}else{
+log("❌ 金币不足");
+}
+}
+
+// ====================== 合成台界面 ======================
+function showCraft(){
+let h=`<div class="card active-page" id="craft"><div class="title">⚗️ 合成台</div>`;
+recipes.forEach((r,i)=>{
+h+=`<div class="task-item">${r.name}（${r.fee}金币）：`;
+r.needs.forEach(n=>{const it=items.find(x=>x.id===n.id);h+=`${it.name}×${n.num} `;});
+h+=`<button class="modal-btn bg-purple" onclick="craft(${i})">合成</button></div>`;
+});
+h+=`<button class="btn btn-primary" onclick="ui()">返回</button></div>`;
+document.getElementById("app").innerHTML=h;
+}
+
+// ====================== 鱼竿强化界面 ======================
+function showUpgrade(){
+const cost=Math.floor(8000*Math.pow(1.45,rod.upgrade));
+let h=`<div class="card active-page" id="upgrade"><div class="title">🔧 鱼竿强化</div>`;
+h+=`<p>当前：+${rod.upgrade}｜下次：${cost} 金币</p>`;
+h+=`<p>效果：每次+4强度</p>`;
+h+=`<button class="btn btn-upgrade" onclick="upgradeRod()">强化</button>`;
+h+=`<button class="btn btn-primary" onclick="ui()">返回</button></div>`;
+document.getElementById("app").innerHTML=h;
+}
+
+// ====================== 手册&任务 ======================
+const handbook=[];
+for(let i=1;i<=100;i++)handbook.push({id:i,lv:i,gold:i*250,bonus:Math.floor(i/5)});
+
+const tasks=[];
+for(let i=1;i<=50;i++)tasks.push({id:i,text:`钓${i*3}条鱼`,pro:0,tar:i*3,exp:i*25,gold:i*100});
+
+function showHandbook(){
+const cur=handbook.find(x=>x.lv===level);
+let h=`<div class="card active-page" id="handbook"><div class="title">钓鱼手册 Lv${level}</div>`;
+h+=`<p>奖励：${cur.gold}金币｜强度+${cur.bonus}</p>`;
+h+=`<button class="btn btn-success" onclick="getHandbook()">领取</button>`;
+h+=`<button class="btn btn-primary" onclick="ui()">返回</button></div>`;
+document.getElementById("app").innerHTML=h;
+}
+function getHandbook(){
+const cur=handbook.find(x=>x.lv===level);
+if(!doneHandbook.has(cur.id)){gold+=cur.gold;rod.bonus+=cur.bonus;doneHandbook.add(cur.id);log(`✅ 领取成功`);}
+else{log("✅ 已领取");}refreshAll();
+}
+
+function showTasks(){
+let h=`<div class="card active-page" id="tasks"><div class="title">任务</div>`;
+tasks.forEach(t=>{
+const ok=t.pro>=t.tar;
+h+=`<div class="task-item">${t.text} ${t.pro}/${t.tar} <span class="${ok?'done':''}">${ok?'✔':'...'}</span></div>`;
+});
+h+=`<button class="btn btn-success" onclick="getTasks()">一键领取</button>`;
+h+=`<button class="btn btn-primary" onclick="ui()">返回</button></div>`;
+document.getElementById("app").innerHTML=h;
+}
+function getTasks(){
+tasks.forEach(t=>{if(t.pro>=t.tar&&!doneTasks.has(t.id)){gold+=t.gold;exp+=t.exp;doneTasks.add(t.id);}});
+log("✅ 已领取全部奖励");refreshAll();
+}
+
+// ====================== 存档 ======================
+function save(){
+localStorage.setItem("fish_s1_final",JSON.stringify({
+gold,level,exp,maxExp,rod,caught,fishCount,backpack,bagItems,doneTasks,doneHandbook,tasks,lastTaxTime
+}));
+log("💾 已保存");
+}
+function load(){
+const d=localStorage.getItem("fish_s1_final");
+if(!d)return;
+const j=JSON.parse(d);
+gold=j.gold;level=j.level;exp=j.exp;maxExp=j.maxExp;rod=j.rod;
+caught=new Set(j.caught);fishCount=j.fishCount;
+backpack=j.backpack;bagItems=j.bagItems||[];
+doneTasks=new Set(j.doneTasks);doneHandbook=new Set(j.doneHandbook);
+lastTaxTime=j.lastTaxTime||Date.now();
+if(j.tasks)j.tasks.forEach((t,i)=>tasks[i]=t);
+}
+
+// 启动
+initItems();
+initFish();
+load();
+ui();
 </script>
 </body>
 </html>
