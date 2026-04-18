@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎣终极钓鱼大亨·曲波宇宙 S1赛季</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{background:#0b1220;color:#e6e9ef;font-family:system-ui;}
+        .box{background:#121a29;border-radius:12px;padding:15px;margin:10px;box-shadow:0 0 10px #0005;}
+        .title{color:#9ceeff;text-align:center;font-size:22px;font-weight:bold;margin-bottom:15px;}
+        .btn{display:block;width:100%;padding:15px;border:none;border-radius:8px;margin:8px 0;font-size:16px;font-weight:bold;cursor:pointer;transition:0.3s;}
+        .btn:active{transform:scale(0.98);}
+        .btn-primary{background:#0099cc;color:#fff;}
+        .btn-success{background:#22aa66;color:#fff;}
+        .btn-warning{background:#cc8800;color:#fff;}
+        .btn-danger{background:#cc2244;color:#fff;}
+        .btn-season{background:#ff6699;color:#fff;}
+        .info{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:15px;color:#ccc;}
+        .log{color:#c0c8d7;font-size:14px;margin-top:10px;line-height:1.5;}
+        .task{padding:8px 0;border-bottom:1px solid #333;font-size:14px;}
+        .task .done{color:#6f3;}
+        .task .doing{color:#99ccff;}
+        .rarity{font-weight:bold;}
+        .white{color:#fff;}
+        .blue{color:#66f;}
+        .green{color:#0f9;}
+        .cyan{color:#0ff;}
+        .purple{color:#f3f;}
+        .orange{color:#fa3;}
+        .legend{color:#ff0;font-weight:bold;}
+        .season-text{color:#ff6699;font-weight:bold;}
+        .progress-bar{width:100%;height:10px;background:#333;border-radius:5px;overflow:hidden;margin:5px 0;}
+        .progress-fill{height:100%;background:#00ccff;transition:0.5s;}
+        .progress-fill.season{background:#ff6699;}
+        .hidden{display:none;}
+        .fish-animate{animation:fish 0.5s ease infinite alternate;}
+        @keyframes fish{
+            from{transform:translateY(0);}
+            to{transform:translateY(-10px);}
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="title">🎣终极钓鱼大亨·曲波宇宙 <span class="season-text">S1·春日来临</span></div>
+    <div class="info">
+        <span>称号：钓鱼新手</span>
+        <span>鱼竿：木竿</span>
+        <span>金币：<span id="gold">3000</span></span>
+        <span>等级：<span id="level">1</span>/100</span>
+        <span>经验：<span id="exp">0</span>/<span id="maxExp">100</span></span>
+    </div>
+    <div class="progress-bar"><div id="expBar" class="progress-fill" style="width:0%"></div></div>
+</div>
+
+<div class="box">
+    <button class="btn btn-primary" onclick="fish()">🎣 开始钓鱼</button>
+    <button class="btn btn-success" onclick="showBook()">📖 钓鱼图鉴</button>
+    <button class="btn btn-warning" onclick="showSeasonBook()">🌸 S1限定图鉴</button>
+    <button class="btn btn-warning" onclick="showTasks()">📋 任务大厅</button>
+    <button class="btn btn-primary" onclick="showShop()">🛒 渔具商店</button>
+    <button class="btn btn-danger" onclick="saveGame()">💾 保存游戏</button>
+    <button class="btn btn-season" onclick="showRank()">🏆 排行榜</button>
+</div>
+
+<div class="box">
+    <div class="log" id="log">渔获日志：</div>
+</div>
+
+<script>
+// ========== 核心数据初始化 ==========
+let gold = 3000;
+let level = 1;
+let exp = 0;
+let maxExp = 100;
+let rod = {name:"木竿", bonus:0, level:1};
+let caughtFish = new Set();
+let caughtSeasonFish = new Set();
+let completedTasks = new Set();
+let inventory = [];
+let rankList = [];
+
+// ========== 2000条普通鱼（快速生成，按品质区分） ==========
+const fishList = [];
+const rarities = [
+    {name:"破碎", color:"white", rate:0.4, priceMult:1},
+    {name:"普通", color:"blue", rate:0.3, priceMult:2},
+    {name:"稀有", color:"green", rate:0.15, priceMult:5},
+    {name:"精良", color:"cyan", rate:0.08, priceMult:10},
+    {name:"史诗", color:"purple", rate:0.05, priceMult:25},
+    {name:"传说", color:"orange", rate:0.02, priceMult:100}
+];
+for(let i=1;i<=2000;i++){
+    const r = rarities[Math.floor(Math.random()*rarities.length)];
+    fishList.push({
+        id:i,
+        name:`${r.name}鱼${i}号`,
+        rarity:r.name,
+        color:r.color,
+        price:Math.floor((10+i*2)*r.priceMult),
+        minLevel:Math.ceil(i/200) // 等级越高，解锁高等级鱼
+    });
+}
+
+// ========== 9条S1赛季限定鱼 ==========
+const seasonFish = [
+    {id:2001,name:"春日樱花鱼",rarity:"限定",color:"season-text",price:9999,rate:0.01},
+    {id:2002,name:"迎春锦鲤",rarity:"限定",color:"season-text",price:8888,rate:0.01},
+    {id:2003,name:"嫩芽小鱼",rarity:"限定",color:"season-text",price:7777,rate:0.01},
+    {id:2004,name:"春雨泥鳅",rarity:"限定",color:"season-text",price:6666,rate:0.01},
+    {id:2005,name:"百花鳑鲏",rarity:"限定",color:"season-text",price:5555,rate:0.01},
+    {id:2006,name:"踏青鲫鱼",rarity:"限定",color:"season-text",price:4444,rate:0.01},
+    {id:2007,name:"柳芽黄鳝",rarity:"限定",color:"season-text",price:3333,rate:0.01},
+    {id:2008,name:"东风虾虎",rarity:"限定",color:"season-text",price:2222,rate:0.01},
+    {id:2009,name:"春分麦穗",rarity:"限定",color:"season-text",price:1111,rate:0.01}
+];
+
+// ========== 20把新鱼竿（等级解锁） ==========
+const rods = [
+    {name:"木竿",bonus:0,level:1,price:0},
+    {name:"竹节竿",bonus:5,level:3,price:500},
+    {name:"碳素竿",bonus:10,level:5,price:1000},
+    {name:"玻璃钢竿",bonus:15,level:8,price:2000},
+    {name:"溪流竿",bonus:20,level:10,price:3000},
+    {name:"矶钓竿",bonus:25,level:12,price:5000},
+    {name:"路亚竿",bonus:30,level:15,price:8000},
+    {name:"台钓竿",bonus:35,level:18,price:10000},
+    {name:"筏钓竿",bonus:40,level:20,price:15000},
+    {name:"海竿",bonus:45,level:22,price:20000},
+    {name:"手竿",bonus:50,level:25,price:25000},
+    {name:"竞技竿",bonus:55,level:30,price:30000},
+    {name:"黑坑竿",bonus:60,level:35,price:40000},
+    {name:"远投竿",bonus:65,level:40,price:50000},
+    {name:"马口竿",bonus:70,level:45,price:60000},
+    {name:"雷强竿",bonus:75,level:50,price:80000},
+    {name:"飞蝇竿",bonus:80,level:60,price:100000},
+    {name:"冰钓竿",bonus:85,level:70,price:150000},
+    {name:"S1限定樱花竿",bonus:95,level:80,price:200000},
+    {name:"曲波宇宙神竿",bonus:100,level:100,price:999999}
+];
+
+// ========== 2000个随机任务（经验/金币奖励） ==========
+const tasks = [];
+for(let i=1;i<=2000;i++){
+    const type = Math.random()>0.5?"catch":"earn";
+    const target = Math.floor(Math.random()*20)+1;
+    tasks.push({
+        id:i,
+        name:type==="catch"?`钓到${target}条鱼`:`赚取${target*100}金币`,
+        type:type,
+        target:target,
+        progress:0,
+        expReward:Math.floor(target*10),
+        goldReward:Math.floor(target*50),
+        done:false
+    });
+}
+
+// ========== 钓鱼核心逻辑（原玩法不动，加动画和等级限制） ==========
+function fish(){
+    document.getElementById("log").innerHTML += `<div class="fish-animate">🎣 抛竿中...</div>`;
+    setTimeout(()=>{
+        let fish;
+        // 等级决定鱼的品质
+        const availableFish = fishList.filter(f=>f.minLevel<=level);
+        const roll = Math.random();
+        if(roll<0.01 && level>=10){
+            // 赛季限定鱼
+            fish = seasonFish[Math.floor(Math.random()*seasonFish.length)];
+            caughtSeasonFish.add(fish.id);
+        }else{
+            // 普通鱼，根据鱼竿加成调整
+            fish = availableFish[Math.floor(Math.random()*availableFish.length)];
+            caughtFish.add(fish.id);
+        }
+        // 结算
+        gold += fish.price;
+        addExp(10 + rod.bonus);
+        updateTaskProgress("catch",1);
+        document.getElementById("log").innerHTML += `<div class="${fish.color}">钓到了【${fish.rarity}】${fish.name}，+${fish.price}金币！</div>`;
+        updateUI();
+    },800);
+}
+
+// ========== 经验与等级系统 ==========
+function addExp(amount){
+    exp += amount;
+    while(exp >= maxExp && level < 100){
+        exp -= maxExp;
+        level++;
+        maxExp = Math.floor(maxExp * 1.2);
+        // 等级奖励
+        if(level%10===0) gold += level*1000;
+    }
+    if(level>=100) exp = maxExp;
+    updateUI();
+}
+
+// ========== UI更新 ==========
+function updateUI(){
+    document.getElementById("gold").innerText = gold;
+    document.getElementById("level").innerText = level;
+    document.getElementById("exp").innerText = exp;
+    document.getElementById("maxExp").innerText = maxExp;
+    document.getElementById("expBar").style.width = `${(exp/maxExp)*100}%`;
+}
+
+// ========== 图鉴系统 ==========
+function showBook(){
+    let html = `<div class="box"><div class="title">📖 钓鱼图鉴（${caughtFish.size}/2000）</div>`;
+    fishList.forEach(f=>{
+        const status = caughtFish.has(f.id)?"✅":"❌";
+        html += `<div class="${f.color}">${status} ${f.name} [${f.rarity}]</div>`;
+    });
+    html += `<button class="btn btn-primary" onclick="location.reload()">返回</button></div>`;
+    document.body.innerHTML = html;
+}
+
+function showSeasonBook(){
+    let html = `<div class="box"><div class="title season-text">🌸 S1限定图鉴（${caughtSeasonFish.size}/9）</div>`;
+    seasonFish.forEach(f=>{
+        const status = caughtSeasonFish.has(f.id)?"✅":"❌";
+        html += `<div class="${f.color}">${status} ${f.name} [限定]</div>`;
+    });
+    html += `<button class="btn btn-primary" onclick="location.reload()">返回</button></div>`;
+    document.body.innerHTML = html;
+}
+
+// ========== 任务系统 ==========
+function showTasks(){
+    let html = `<div class="box"><div class="title">📋 任务大厅</div>`;
+    tasks.slice(0,10).forEach(t=>{
+        const status = t.done?"done":"doing";
+        html += `<div class="task ${status}">${t.name}（${t.progress}/${t.target}）+${t.expReward}经验 +${t.goldReward}金币</div>`;
+    });
+    html += `<button class="btn btn-success" onclick="claimTasks()">领取已完成任务</button>`;
+    html += `<button class="btn btn-primary" onclick="location.reload()">返回</button></div>`;
+    document.body.innerHTML = html;
+}
+
+function updateTaskProgress(type, amount){
+    tasks.forEach(t=>{
+        if(t.type===type && !t.done){
+            t.progress += amount;
+            if(t.progress >= t.target){
+                t.done = true;
+            }
+        }
+    });
+}
+
+function claimTasks(){
+    tasks.forEach(t=>{
+        if(t.done && !completedTasks.has(t.id)){
+            completedTasks.add(t.id);
+            exp += t.expReward;
+            gold += t.goldReward;
+        }
+    });
+    addExp(0); // 触发等级结算
+    location.reload();
+}
+
+// ========== 商店系统（鱼竿） ==========
+function showShop(){
+    let html = `<div class="box"><div class="title">🛒 渔具商店</div>`;
+    rods.forEach(r=>{
+        const canBuy = level>=r.level && gold>=r.price && rod.name!==r.name;
+        const owned = rod.name===r.name;
+        const status = owned?"✅已装备":(canBuy?"可购买":"❌等级不足/金币不足");
+        html += `<div class="task">${r.name}（+${r.bonus}%收益加成）Lv.${r.level} ${r.price}金币 ${status}</div>`;
+        if(canBuy){
+            html += `<button class="btn btn-success" onclick="buyRod('${r.name}',${r.bonus},${r.level},${r.price})">购买</button>`;
+        }
+    });
+    html += `<button class="btn btn-primary" onclick="location.reload()">返回</button></div>`;
+    document.body.innerHTML = html;
+}
+
+function buyRod(name, bonus, level, price){
+    if(gold >= price && rods.find(r=>r.name===name)){
+        gold -= price;
+        rod = {name, bonus, level};
+        updateUI();
+        alert(`成功购买并装备【${name}】！`);
+        location.reload();
+    }
+}
+
+// ========== 排行榜 ==========
+function showRank(){
+    rankList.sort((a,b)=>b.caught-a.caught);
+    let html = `<div class="box"><div class="title">🏆 排行榜（本地数据）</div>`;
+    html += `<div class="task">1. 你 - 钓鱼数：${caughtFish.size + caughtSeasonFish.size}</div>`;
+    html += `<button class="btn btn-primary" onclick="location.reload()">返回</button></div>`;
+    document.body.innerHTML = html;
+}
+
+// ========== 存档系统 ==========
+function saveGame(){
+    const saveData = {
+        gold, level, exp, maxExp, rod,
+        caughtFish:Array.from(caughtFish),
+        caughtSeasonFish:Array.from(caughtSeasonFish),
+        completedTasks:Array.from(completedTasks),
+        tasks
+    };
+    localStorage.setItem("fishingSaveS1", JSON.stringify(saveData));
+    document.getElementById("log").innerHTML += `<div>💾 游戏已保存！</div>`;
+}
+
+function loadGame(){
+    const save = localStorage.getItem("fishingSaveS1");
+    if(save){
+        const data = JSON.parse(save);
+        gold = data.gold;
+        level = data.level;
+        exp = data.exp;
+        maxExp = data.maxExp;
+        rod = data.rod;
+        caughtFish = new Set(data.caughtFish);
+        caughtSeasonFish = new Set(data.caughtSeasonFish);
+        completedTasks = new Set(data.completedTasks);
+        data.tasks.forEach((t,i)=>tasks[i] = t);
+        updateUI();
+    }
+}
+
+// 加载游戏
+loadGame();
+updateUI();
+</script>
+</body>
+</html>
